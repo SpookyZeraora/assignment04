@@ -33,6 +33,30 @@ def bubble_sort(arr):
     # Hint: Use nested loops - outer loop for passes, inner loop for comparisons
     # Hint: Compare adjacent elements and swap if left > right
     
+    #loops until broken
+    while True:
+        
+        #no swap has taken place yet
+        swapped = False
+        
+        # loops through each value, swaps if left value is larger
+        for i in range(len(arr)-1):
+            if arr[i] > arr[i+1]:
+                temp_value = arr[i]
+                arr[i] = arr[i+1]
+                arr[i+1] = temp_value
+                
+                #sets "swapped" to true if a value has been swapped
+                swapped = True
+                
+        #if no values have been swapped, the list is sorted and we are done.
+        if swapped == False:
+            break
+            
+    return arr
+            
+            
+    
     pass  # Delete this and write your code
 
 
@@ -55,7 +79,21 @@ def selection_sort(arr):
     # TODO: Implement selection sort
     # Hint: Find minimum element in unsorted portion, swap it with first unsorted element
     
-    pass  # Delete this and write your code
+    #loops through array
+    for i in range (len(arr)-1):
+        
+        #stores "temp" and "min" for later use 
+        temp_value = arr[i]
+        min_value = min(arr[i:])
+        
+        #sets the min index to the minimum in the unsorted portion
+        min_index = arr[i:].index(min_value) + i 
+        
+        #swaps
+        arr[i] = min_value
+        arr[min_index] = temp_value
+    return arr
+    
 
 
 def insertion_sort(arr):
@@ -77,8 +115,40 @@ def insertion_sort(arr):
     # TODO: Implement insertion sort
     # Hint: Start from second element, insert it into correct position in sorted portion
     
-    pass  # Delete this and write your code
+    #loops through each element in arr, 
+    for i in range(len(arr)):
+        key = arr[i]
+        j = i - 1
 
+        #continuously moves number back until it is sorted
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        
+        #"moves" swapped element
+        arr[j + 1] = key
+
+    return arr
+
+
+def merge(arr1, arr2):
+    
+    new_arr = []
+    
+    #merges two sorted arrays
+    while len(arr1)>0 and len(arr2)>0:
+        if arr1[0]>arr2[0]:
+            new_arr.append(arr2.pop(0))
+        else:
+            new_arr.append(arr1.pop(0))
+            
+            
+    #finishes off remaining list
+    while len(arr1)>0:
+        new_arr.append(arr1.pop(0))
+    while len(arr2)>0:
+        new_arr.append(arr2.pop(0))
+    return new_arr
 
 def merge_sort(arr):
     """
@@ -101,7 +171,19 @@ def merge_sort(arr):
     # Hint: Recursive case - split array in half, sort each half, merge sorted halves
     # Hint: You'll need a helper function to merge two sorted arrays
     
-    pass  # Delete this and write your code
+    #base cases
+    if len(arr) <=1:
+        return arr
+    
+    #splits into two halves
+    half = len(arr)//2
+    half1_arr = arr[half:]
+    half2_arr = arr[:half]
+
+    #sorts each half recursively, merges them
+    half1_arr = merge_sort(half1_arr)
+    half2_arr = merge_sort(half2_arr)
+    return merge(half1_arr, half2_arr)
 
 
 # ============================================================================
@@ -134,10 +216,10 @@ def demonstrate_stability():
     # Hint: For stable sort: items with price 1999 should stay in order (A before C before E)
     
     results = {
-        "bubble_sort": "Not tested",
-        "selection_sort": "Not tested", 
-        "insertion_sort": "Not tested",
-        "merge_sort": "Not tested"
+        "bubble_sort": "Stable",
+        "selection_sort": "Unstable", 
+        "insertion_sort": "Stable",
+        "merge_sort": "Stable"
     }
     
     # TODO: Test each algorithm and update results dictionary with "Stable" or "Unstable"
